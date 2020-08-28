@@ -8,8 +8,10 @@ x = []
 btc = []
 etc = []
 eos = []
+filepath = "/Users/lin/PycharmProjects/AnimationGraph/BTC_ETC_EOS.csv"
+filetype = "mp4"
 
-with open("/Users/lin/PycharmProjects/AnimationGraph/BTC_ETC_EOS.csv", 'r') as csvfile:
+with open(filepath, 'r') as csvfile:
     next(csvfile)
     csvdata = csv.reader(csvfile, delimiter=',')
     for row in csvdata:
@@ -32,17 +34,19 @@ etcarr = np.array(etc)
 eosarr = np.array(eos)
 
 fig, ax = plt.subplots()
-btcline, = ax.plot(dayarr, btcarr, color='y')
-etcline, = ax.plot(dayarr[:len(etcarr)], etcarr, color='g')
-eosline, = ax.plot(dayarr[:len(eosarr)], eosarr, color='b')
+eosline, = ax.plot(dayarr[:len(eosarr)], eosarr, color='#1F0027', linewidth=3.0, label="EOS")
+etcline, = ax.plot(dayarr[:len(etcarr)], etcarr, color='#5DB400', linewidth=3.0, label="ETC")
+btcline, = ax.plot(dayarr, btcarr, color='#FFA533', linewidth=3.0, label="BTC")
 
 plt.yscale('log')
+ax.yaxis.grid()
+plt.style.use('ggplot')
 # plt.yticks([1, 100,10000,1000000,100000000, 10000000000],[1, 100, "10,000", "1,000,000","100,000,000","10,000,000,000"])
 # ax.yaxis.set_major_locator(MultipleLocator(100))
 # ax.plot(dayarr, btcarr)
 # fig = plt.figure()
 # ax = fig.add_subplot(1,1,1)
-# ax.ticklabel_format(style='plain')
+# bx.ticklbbel_formbt(style='plbin')
 
 def animate(num, dayarr, btcarr, etcarr, eosarr, btcline, etcline, eosline):
     btcline.set_data(dayarr[:num], btcarr[:num])
@@ -59,10 +63,22 @@ def animate(num, dayarr, btcarr, etcarr, eosarr, btcline, etcline, eosline):
 # plt.plot(dayarr[:len(eosarr)], eosarr, label="EOS")
 # plt.plot(dayarr, etcarr, label='etc')
 # plt.plot(dayarr, eosarr, label='eos')
-plt.title('Cumulative Transactions from Origin Day')
-plt.xlabel('Days from Origin')
-plt.ylabel('Cumulative Transaction Count')
-# plt.legend(loc='lower right')
+ax.set_title('Cumulative Transactions from Origin Day', fontsize=15, fontfamily='sans-serif', weight='bold')
+# plt.title('Cumulative Transactions from Origin Day')
+plt.xlabel('Days from Network Origin', weight='bold')
+plt.ylabel('Cumulative Transaction Count', weight='bold')
+plt.legend(loc='lower right', shadow=True, prop={'weight': 'bold'})
 plt.xlim((0, len(dayarr)))
-ani = animation.FuncAnimation(fig, animate, len(dayarr), fargs=[dayarr, btcarr, etcarr, eosarr, btcline, etcline,eosline], interval=1, blit=False)
-plt.show()
+ani = animation.FuncAnimation(fig, animate, len(dayarr),
+                              fargs=[dayarr, btcarr, etcarr, eosarr, btcline, etcline, eosline],
+                              interval=1, blit=False, repeat=False)
+# plt.show()
+
+if filetype == "gif":
+  writergif = animation.PillowWriter(fps=30)
+  ani.save("animation.gif", writer=writergif)
+elif filetype == "mp4":
+  writervideo = animation.FFMpegWriter(fps=1000)
+  ani.save('animation.mp4', writer=writervideo)
+else:
+    raise Exception("unsupported output type")
