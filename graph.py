@@ -33,7 +33,6 @@ def draw_graph(assets) -> "Figure":
     yarrs_dict = get_ys(assets_accumulation)
     dayarr = get_x(assets_accumulation)
     lines_dict = get_lines(assets_accumulation, dayarr, yarrs_dict)
-    print(lines_dict.keys())
     draw_fig(dayarr)
     current_fig = plt.gcf()
     # plt.show()
