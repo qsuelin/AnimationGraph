@@ -3,8 +3,7 @@ Visual-coin is a Python console application for visualizing metrics of different
 
 ## API reference
 ### Synopsis
-visual-coin.py [-h] --assets ASSETS [ASSETS ...] [--output {png,pdf,mp4,gif,mov,avi} [{png,pdf,mp4,gif,mov,avi} ...]] [--dir DIR] [--name NAME] [--quiet]
-
+visual-coin.py [-h] --assets ASSETS [ASSETS ...] (--output {png,pdf,mp4,gif,mov,avi} [{png,pdf,mp4,gif,mov,avi} ...] | --show) [--dir DIR] [--name NAME]
 
 
 ### Options
@@ -23,6 +22,9 @@ visual-coin.py [-h] --assets ASSETS [ASSETS ...] [--output {png,pdf,mp4,gif,mov,
   <dt>--name | -n NAME
   <dd>Input desired filename. Default: assetid1_assetid2_...%y%m%d.filetype
 
-  <dt>--quite | -q
-  <dd>If specify, the graph will be drawn as daemon.
+  <dt>--show | -s
+  <dd>If specify, the graph will be shown.
 <dl>
+
+## Sample
+![alt text](https://github.com/qsuelin/AnimationGraph/blob/master/sample/eos_etc_btc200902.png Sample PNG for EOS, ETC, BTC till 2020/09/02)
