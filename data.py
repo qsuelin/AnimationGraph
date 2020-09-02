@@ -1,8 +1,5 @@
 import requests
-from console import ConsoleArgs
 
-# get assets from console, list of str
-assets = ConsoleArgs.assets
 
 # default return daily from raw data
 def get_assets_daily(assets: list) -> dict:
@@ -11,9 +8,11 @@ def get_assets_daily(assets: list) -> dict:
         URL = f'https://community-api.coinmetrics.io/v2/assets/{asset}/metricdata?metrics=TxCnt'
         # print(URL)
         response = requests.get(URL)
-        json_response = response.json()
-        # print(json_response)
-        assets_daily[asset] = parse_response(json_response)
+        if not response:
+            raise Exception("Bad response from server. Check connection or valid asset id.")
+        else:
+            json_response = response.json()
+            assets_daily[asset] = parse_response(json_response)
     return assets_daily
 
 

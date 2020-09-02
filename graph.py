@@ -1,11 +1,12 @@
 import data
-import console
 
 import matplotlib.pyplot as plt
 import csv
 import numpy as np
 import matplotlib.animation as animation
 from matplotlib.pyplot import MultipleLocator
+
+from pathlib import Path
 
 
 # get data from data module, get filepath from console
@@ -32,10 +33,15 @@ def draw_graph(assets) -> "Figure":
     yarrs_dict = get_ys(assets_accumulation)
     dayarr = get_x(assets_accumulation)
     lines_dict = get_lines(assets_accumulation, dayarr, yarrs_dict)
+    print(lines_dict.keys())
     draw_fig(dayarr)
     current_fig = plt.gcf()
     # plt.show()
     return current_fig
+
+
+def show_graph():
+    plt.show()
 
 
 def draw_fig(dayarr) -> None:
@@ -49,28 +55,30 @@ def draw_fig(dayarr) -> None:
     plt.xlim((0, len(dayarr)))
 
 
-def get_exports(fig: "Figure", filetypes: list):
-    print(dayarr, lines_dict, yarrs_dict)
+def get_exports(fig, filetypes: list, path: str):
+    # print(dayarr, lines_dict, yarrs_dict)
     ani = animation.FuncAnimation(fig, animate, len(dayarr),
                                   fargs=[dayarr, lines_dict, yarrs_dict],
                                   interval=1, blit=False, repeat=False)
 
     for the_type in filetypes:
-        get_the_export(the_type, ani)
+        get_the_export(the_type, path, ani)
 
 
-def get_the_export(filetype, ani):
+def get_the_export(filetype: list, path: str, ani):
     pics = ['png', 'pdf']
     vids = ['mp4', 'avi', 'mov']
     if filetype in pics:
-        print('inside pic')
-        plt.savefig(f'fig.{filetype}')
+        print(f'Exporting {filetype}...')
+        plt.savefig(f'{path}.{filetype}')
     elif filetype == "gif":
+        print(f'Exporting {filetype}...')
         writergif = animation.PillowWriter(fps=1000)
-        ani.save("animation.gif", writer=writergif)
+        ani.save(f"{path}.{filetype}", writer=writergif)
     elif filetype in vids:
+        print(f'Exporting {filetype}...')
         writervideo = animation.FFMpegWriter(fps=1000)
-        ani.save(f'animation.{filetype}', writer=writervideo)
+        ani.save(f'{path}.{filetype}', writer=writervideo)
     else:
         raise Exception("unsupported output type")
 
@@ -93,7 +101,8 @@ def animate(num, dayarr, lines_dict, yarrs_dict):
 
 def get_line(assetid: str, ax, dayarr, yarrs_dict) -> 'axes obj':
     yarr = yarrs_dict[assetid]
-    return ax.plot(dayarr, yarr, color=config_dict[assetid]['color'], linewidth=3.0, label=config_dict[assetid]['label'])[0]
+    return ax.plot(dayarr, yarr, color=config_dict[assetid]['color'], linewidth=3.0,
+                   label=config_dict[assetid]['label'])[0]
 
 
 # given dict of assets, v: list
@@ -103,7 +112,7 @@ def get_x(accumulation_dict: dict):
     return np.array(x)
 
 
-def get_maxlength(accumulation_dict:dict) -> int:
+def get_maxlength(accumulation_dict: dict) -> int:
     return max([len(i) for i in accumulation_dict.values()])
 
 
@@ -120,5 +129,6 @@ def get_ys(accumulation_dict: dict) -> dict:
 
 
 if __name__ == '__main__':
-    current_fig = draw_graph(['eos', 'btc'])
-    get_exports(current_fig, ['png', 'gif', 'mp4'])
+    current_fig = draw_graph(['eos'])
+    print(str(Path.cwd()))
+    get_exports(current_fig, ['png', 'gif', 'mp4'], path=str(Path.cwd()))
