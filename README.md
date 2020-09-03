@@ -3,7 +3,7 @@ Visual-coin is a Python console application for visualizing metrics of different
 
 ## API reference
 ### Synopsis
-`visual-coin.py [-h] --assets ASSETS [ASSETS ...] (--output {png,pdf,mp4,gif,mov,avi} [{png,pdf,mp4,gif,mov,avi} ...] | --show) [--dir DIR] [--name NAME]`
+`visual-coin.py [-h] --assets ASSET [ASSET ...] (--output OUTPUT [OUTPUT ...] | --show) [--dir DIR] [--name NAME]`
 
 
 ### Options
