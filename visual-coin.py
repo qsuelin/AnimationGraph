@@ -8,7 +8,7 @@ import datetime
 parser = argparse.ArgumentParser(description='Get accumulative daily transaction for assets in blockchain networks')
 
 # visual-coin [-h] -a | --assets -output | -o [--quite | -q]
-parser.add_argument('--assets', '-a', nargs="+", required=True,
+parser.add_argument('--asset', '-a', nargs="+", required=True,
                     help='input asset ids separated by space')
 group = parser.add_mutually_exclusive_group(required=True)
 group.add_argument('--output', '-o', nargs='+', choices=['png', 'pdf', 'mp4', 'gif', 'mov', 'avi'],

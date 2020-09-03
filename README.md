@@ -3,12 +3,12 @@ Visual-coin is a Python console application for visualizing metrics of different
 
 ## API reference
 ### Synopsis
-`visual-coin.py [-h] --assets ASSET [ASSET ...] (--output OUTPUT [OUTPUT ...] | --show) [--dir DIR] [--name NAME]`
+`visual-coin.py [-h] --asset ASSET [ASSET ...] (--output OUTPUT [OUTPUT ...] | --show) [--dir DIR] [--name NAME]`
 
 
 ### Options
 <dl>
-  <dt>-assets | -a opt1 [opt2 ...]
+  <dt>-asset | -a opt1 [opt2 ...]
   <dd>Input asset(s) to be visualized into a single graph. If many, separated with space
   <dd> Check coinmetrics for supported assets. If asset is invalid or failed to connect to the server, exception will be raised.
 
