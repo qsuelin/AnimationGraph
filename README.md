@@ -28,3 +28,4 @@ Visual-coin is a Python console application for visualizing metrics of different
 
 ## Sample
 ![alt text](https://github.com/qsuelin/visual-coin/blob/master/sample/eos_etc_btc200902.png "Sample PNG for EOS, ETC, BTC till 2020/09/02")
+![Sample GIF for EOS, ETC, BTC till 2020/09/02](https://github.com/qsuelin/visual-coin/blob/master/sample/eos_etc_btc200902.gif)
