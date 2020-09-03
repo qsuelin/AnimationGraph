@@ -1,5 +1,7 @@
 # Visual-coin
-Visual-coin is a Python console application for visualizing metrics of different blockchain asset in the form of graph or animation. The data sources from coinmetrics api V2.
+Python console application for visualizing metrics of different blockchain asset(s) in customized form(s) of picture or animation. It meant to offer an easy monitor tool for the assets' performance. The data sources from coinmetrics api V2.
+Default x-axis: Days from the network first got launched.
+Default y-axis: Cumulative Transaction Count.
 
 ## API reference
 ### Synopsis
