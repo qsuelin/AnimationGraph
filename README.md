@@ -27,4 +27,4 @@ visual-coin.py [-h] --assets ASSETS [ASSETS ...] (--output {png,pdf,mp4,gif,mov,
 <dl>
 
 ## Sample
-![alt text](https://github.com/qsuelin/AnimationGraph/blob/master/sample/eos_etc_btc200902.png "Sample PNG for EOS, ETC, BTC till 2020/09/02")
+![alt text](https://github.com/qsuelin/visual-coin/blob/master/sample/eos_etc_btc200902.png "Sample PNG for EOS, ETC, BTC till 2020/09/02")

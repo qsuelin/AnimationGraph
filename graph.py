@@ -72,7 +72,7 @@ def get_the_export(filetype: list, path: str, ani):
         plt.savefig(f'{path}.{filetype}')
     elif filetype == "gif":
         print(f'Exporting {filetype}...')
-        writergif = animation.PillowWriter(fps=1000)
+        writergif = animation.PillowWriter(fps=10)
         ani.save(f"{path}.{filetype}", writer=writergif)
     elif filetype in vids:
         print(f'Exporting {filetype}...')
