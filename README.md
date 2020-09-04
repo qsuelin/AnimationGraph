@@ -20,16 +20,16 @@ Default y-axis: Cumulative Transaction Count.
 
   <dt>--dir | -d DIR
   <dd>Input destination directory to export files into.   
-  <dd>Default location: `current script directory/out`.
+  <dd>Default location: <code>current script directory/out</code>.
 
   <dt>--name | -n NAME
   <dd>Input desired filename.
-  <dd>Default: `asset_asset_...YYMMDD`    
+  <dd>Default: <code>asset_asset_...YYMMDD</code>    
 
     $ date
     Thu Sep  3 09:08:19 CDT 2020
-    $ visual-coin.py -a eos btc -o png
-    # output: eos_btc200903.png
+    $ visual-coin.py -a eos etc btc -o png
+    # output: eos_etc_btc200903.png
 
   <dt>--show | -s
   <dd>If specify, the graph will be shown.
