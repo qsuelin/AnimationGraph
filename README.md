@@ -5,14 +5,14 @@ Default y-axis: Cumulative Transaction Count.
 
 ## API reference
 ### Synopsis
-> visual-coin.py [-h] --asset ASSET [ASSET ...] (--output OUTPUT [OUTPUT ...] | --show) [--dir DIR] [--name NAME]
+    visual-coin.py [-h] --asset ASSET [ASSET ...] (--output OUTPUT [OUTPUT ...] | --show) [--dir DIR] [--name NAME]
 
 
 ### Options
 <dl>
   <dt>-asset | -a ASSET [ASSET ...]
   <dd>Input asset(s) to be visualized into a single graph. If many, separated with space.
-  <dd> Check [Coinmetrics](https://community-api.coinmetrics.io/v2/assets/) for supported assets. If asset is invalid or failed to connect to the server, exception will be raised.
+  <dd> Check <a href=https://community-api.coinmetrics.io/v2/assets/>Coinmetrics</a> for supported assets. If asset is invalid or failed to connect to the server, exception will be raised.
 
   <dt>--output | -o OUTPUT [OUTPUT ...]
   <dd>Input the file type(s) to export as. If many, separated with space.
