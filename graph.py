@@ -8,18 +8,19 @@ from matplotlib.pyplot import MultipleLocator
 
 from pathlib import Path
 
-
 # get data from data module, get filepath from console
 # data: dict
 # assets = console.ConsoleArgs.assets
 # filetypes = console.ConsoleArgs.filetypes
 
 
-config_dict = {
-    'eos': {'color': '#1F0027', 'label': "EOS"},
-    'etc': {'color': '#5DB400', 'label': "ETC"},
-    'btc': {'color': '#FFA533', 'label': 'BTC'},
-    }
+preset_color_dict = {
+    'eos': {'color': '#1F0027'},
+    'etc': {'color': '#5DB400'},
+    'btc': {'color': '#FFA533'}
+}
+
+default_color = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'w']
 
 fig, ax = plt.subplots()
 yarrs_dict = {}
@@ -27,16 +28,35 @@ dayarr = None
 lines_dict = {}
 
 
-def draw_graph(assets) -> "Figure":
+def draw_graph(assets: list) -> "Figure":
     global fig, ax, yarrs_dict, dayarr, lines_dict
-    assets_accumulation = data.get_assets_accumulation(assets)
-    yarrs_dict = get_ys(assets_accumulation)
-    dayarr = get_x(assets_accumulation)
-    lines_dict = get_lines(assets_accumulation, dayarr, yarrs_dict)
-    draw_fig(dayarr)
-    current_fig = plt.gcf()
-    # plt.show()
-    return current_fig
+    # get x, y data -> np.array
+    try:
+        assets_accumulation = data.get_assets_accumulation(assets)
+        yarrs_dict = get_ys(assets_accumulation)
+        dayarr = get_x(assets_accumulation)
+        # get styles
+        try:
+            update_preset_color_dict(assets)
+        except StyleError as e:
+            print(e)
+            raise
+        lines_dict = get_lines(assets_accumulation, dayarr, yarrs_dict)
+        draw_fig(dayarr)
+        current_fig = plt.gcf()
+        # plt.show()
+        return current_fig
+    except data.AssetError as e:
+        print(e)
+        raise
+    except data.RequestError as e:
+        print(e)
+        raise
+    except Exception as e:
+        print(e)
+        raise
+
+
 
 
 def show_graph():
@@ -79,7 +99,7 @@ def get_the_export(filetype: list, path: str, ani):
         writervideo = animation.FFMpegWriter(fps=1000)
         ani.save(f'{path}.{filetype}', writer=writervideo)
     else:
-        raise Exception("unsupported output type")
+        raise OutputError("unsupported output type")
 
 
 # Given assets in dict, return dict, k: asset, v: line2D_obj
@@ -100,11 +120,12 @@ def animate(num, dayarr, lines_dict, yarrs_dict):
 
 def get_line(assetid: str, ax, dayarr, yarrs_dict) -> 'axes obj':
     yarr = yarrs_dict[assetid]
-    return ax.plot(dayarr, yarr, color=config_dict[assetid]['color'], linewidth=3.0,
-                   label=config_dict[assetid]['label'])[0]
+    return ax.plot(dayarr, yarr, color=preset_color_dict[assetid]['color'], linewidth=3.0,
+                   label=assetid.upper())
+
+    # given dict of assets, v: list
 
 
-# given dict of assets, v: list
 def get_x(accumulation_dict: dict):
     num_days = get_maxlength(accumulation_dict)
     x = [i for i in range(num_days)]
@@ -125,6 +146,39 @@ def get_ys(accumulation_dict: dict) -> dict:
         yarrs_dict[asset] = np.array(accumulation_dict[asset])
 
     return yarrs_dict
+
+
+def update_preset_color_dict(assets):
+    assets_no_style = assets.copy()
+    for asset in preset_color_dict:
+        if asset in assets:
+            assets_no_style.remove(asset)
+
+    if len(assets_no_style) > len(default_color):
+        raise StyleError(
+            f"Assets list too long to exceed default color selection. "
+            f"Specify color for at least {len(assets_no_style) - len(default_color)} asset(s).")
+    else:
+        for i in range(len(assets_no_style)):
+            preset_color_dict.setdefault(assets_no_style[i], {'color': default_color[i]})
+
+
+class Error(Exception):
+    """Base Error."""
+
+
+class StyleError(Error):
+    """Raised when style goes wrong."""
+
+    def __init__(self, message):
+        self.message = message
+
+
+class OutputError(Error):
+    """Raised when filetype not supported"""
+
+    def __init__(self, message):
+        self.message = message
 
 
 if __name__ == '__main__':

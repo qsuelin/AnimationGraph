@@ -9,7 +9,10 @@ def get_assets_daily(assets: list) -> dict:
         # print(URL)
         response = requests.get(URL)
         if not response:
-            raise Exception("Bad response from server. Check connection or valid asset id.")
+            if response.status_code == 404:
+                raise AssetError("Invalid asset(s). Check spelling and Coinmetrics for supported assets.")
+            else:
+                raise RequestError("Requests not supported.")
         else:
             json_response = response.json()
             assets_daily[asset] = parse_response(json_response)
@@ -41,5 +44,30 @@ def accumulate_asset_daily(asset_daily: list):
     return asset_accumulation
 
 
+class Error(Exception):
+    """base error."""
+
+
+class AssetError(Error):
+    """invalid asset. Raised with 404"""
+
+    def __init__(self, message):
+        self.message = message
+
+
+class RequestError(Error):
+    """400-403 from server"""
+
+    def __init__(self, message):
+        self.message = message
+
+
 if __name__ == '__main__':
-    print(get_assets_accumulation(['eos', 'btc']))
+    try:
+        print(get_assets_accumulation(['eos', 'btc']))
+    except AssetError as e:
+        print(e)
+    except RequestError as e:
+        print(e)
+    except Exception as e:
+        print(e)

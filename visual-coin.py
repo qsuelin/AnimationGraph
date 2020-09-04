@@ -21,19 +21,24 @@ parser.add_argument('--name', '-n',
                     help='input filename for the output file')
 
 args = parser.parse_args()
-assets = args.assets
+assets = args.asset
 filetypes = args.output
 
 # TODO: if filename exists, auto-increment
 
 
-current_fig = graph.draw_graph(assets)
-if filetypes:
-    if not args.name:
-        args.name = '_'.join(assets) + datetime.date.today().strftime("%y%m%d")
-    print("Program running...Press ^C to exit.")
-    path = Path(args.dir) / args.name
-    graph.get_exports(current_fig, filetypes, path)
-    print("Export succeeded.")
+try:
+    current_fig = graph.draw_graph(assets)
+except (data.AssetError, data.RequestError, graph.StyleError):
+    pass
 else:
-    graph.show_graph()
+    if filetypes:
+        if not args.name:
+            args.name = '_'.join(assets) + datetime.date.today().strftime("%y%m%d")
+        print("Program running...Press ^C to exit.")
+        # generate output path with dir/filename
+        path = Path(args.dir) / args.name
+        graph.get_exports(current_fig, filetypes, path)
+        print("Export succeeded.")
+    else:
+        graph.show_graph()
